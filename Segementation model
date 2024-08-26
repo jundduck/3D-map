@@ -61,16 +61,22 @@ def load_data(image_dir, mask_dir):
 image_dir = 'path/to/images'
 mask_dir = 'path/to/masks'
 
-X, y = load_data(image_dir, mask_dir)
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.callbacks import EarlyStopping
 
-# U-Net generation
+x, y = load_data(image_dir, mask_dir)
+
 model = unet_model()
 
-# compile
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-# train
-model.fit(X, y, validation_split=0.2, epochs=50, batch_size=16)
+# Early Stopping set
+early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+
+history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=100, callbacks=[early_stopping])
+
+
 
 
 
