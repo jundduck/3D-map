@@ -5,6 +5,18 @@
 # Use Roboflow for Custom Datasets
 # dataset이 있다고 가정 (roboflow)
 
+import os
+from IPython.display import Image
+
+# Home Directory
+%cd {os.path.expanduser("~")}
+
+# predictions with YOLOv8
+!yolo task=segment mode=predict model=yolov8s-seg.pt conf=0.25 source='https://media.roboflow.com/user path' save=true
+
+Image(filename='user path', height=600)
+
+
 !mkdir {HOME}/datasets
 %cd {HOME}/datasets
 
@@ -19,9 +31,8 @@ rf = Roboflow(api_key="YOUR_API_KEY")
 # Access the specified workspace and project
 project = rf.workspace("alpaco5-f3woi").project("part-autolabeld")
 
-# Download data corresponding to version 5 of the project in YOLOv8
+# Download data corresponding to version 5 of the project in YOLOv8 format
 dataset = project.version(5).download("yolov8")
-
 
 
 # Training YOLOv8 Instance Segmentation Model
